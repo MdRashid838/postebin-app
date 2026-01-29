@@ -6,6 +6,9 @@ export const createPaste = async (req, res) => {
   try {
     const { content, ttl_seconds, max_views } = req.body;
     const baseUrl = process.env.BASE_URl;
+    if(!baseUrl) {
+      return res.status(400).json({ error: "baseutl note found"})
+    }
 
     // ===== Validation =====
     if (!content || typeof content !== "string" || !content.trim()) {
