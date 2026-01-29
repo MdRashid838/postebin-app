@@ -1,11 +1,11 @@
 import Paste from "../models/pasteModule.js";
-import getNow  from "../utils/timeUtil.js";
-
+import getNow from "../utils/timeUtil.js";
 
 //  Create a new paste
 export const createPaste = async (req, res) => {
   try {
     const { content, ttl_seconds, max_views } = req.body;
+    const baseUrl = process.env.BASE_URl;
 
     // ===== Validation =====
     if (!content || typeof content !== "string" || !content.trim()) {
@@ -16,14 +16,18 @@ export const createPaste = async (req, res) => {
       ttl_seconds !== undefined &&
       (!Number.isInteger(ttl_seconds) || ttl_seconds < 1)
     ) {
-      return res.status(400).json({ error: "ttl_seconds must be an integer >= 1" });
+      return res
+        .status(400)
+        .json({ error: "ttl_seconds must be an integer >= 1" });
     }
 
     if (
       max_views !== undefined &&
       (!Number.isInteger(max_views) || max_views < 1)
     ) {
-      return res.status(400).json({ error: "max_views must be an integer >= 1" });
+      return res
+        .status(400)
+        .json({ error: "max_views must be an integer >= 1" });
     }
 
     const now = getNow(req);
@@ -46,11 +50,11 @@ export const createPaste = async (req, res) => {
 
     const paste = await Paste.create(pasteData);
     console.log("TTL:", ttl_seconds);
-console.log("ExpiresAt:", paste.expiresAt);
+    console.log("ExpiresAt:", paste.expiresAt);
 
     return res.status(201).json({
       id: paste._id.toString(),
-      url: `${req.protocol}://${req.get("host")}/p/${paste._id}`,
+      url: `${baseUrl}/p/${paste._id}`,
     });
   } catch (error) {
     console.error("Create paste error:", error);
@@ -94,9 +98,7 @@ export const getPaste = async (req, res) => {
         paste.maxViews === null
           ? null
           : Math.max(paste.maxViews - paste.views, 0),
-      expires_at: paste.expiresAt
-        ? paste.expiresAt.toISOString()
-        : null,
+      expires_at: paste.expiresAt ? paste.expiresAt.toISOString() : null,
     });
   } catch (error) {
     console.error("Get paste error:", error);
