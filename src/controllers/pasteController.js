@@ -5,7 +5,7 @@ import getNow from "../utils/timeUtil.js";
 export const createPaste = async (req, res) => {
   try {
     const { content, ttl_seconds, max_views } = req.body;
-    const baseUrl = process.env.BASE_URl;
+    const baseUrl = process.env.BASE_URL;
     if(!baseUrl) {
       return res.status(400).json({ error: "baseutl note found"})
     }
