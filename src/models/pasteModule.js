@@ -16,10 +16,10 @@ const pasteSchema = new mongoose.Schema(
       default: () => new Date(Date.now() + TWENTY_FOUR_HOURS),
     },
 
-    // Default: max 5 views
+    // Default: max 3 views
     maxViews: {
       type: Number,
-      default: 5,
+      default: 3,
       min: 1,
     },
 

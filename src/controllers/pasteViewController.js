@@ -1,9 +1,7 @@
 import Paste from "../models/pasteModule.js";
 import getNow from "../utils//timeUtil.js";
 
-/**
- * Escape HTML to prevent script execution
- */
+// Escape HTML to prevent script execution
 function escapeHtml(str = "") {
   return str
     .replace(/&/g, "&amp;")
@@ -13,10 +11,7 @@ function escapeHtml(str = "") {
     .replace(/'/g, "&#039;");
 }
 
-/**
- * GET /p/:id
- * Returns HTML page with paste content
- */
+//  Returns HTML page with paste content
 const viewPaste = async (req, res) => {
   try {
     const { id } = req.params;
